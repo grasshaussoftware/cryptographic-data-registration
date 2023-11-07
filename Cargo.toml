@@ -1,0 +1,21 @@
+[package]
+name = "data-entry-terminal"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# Use only one version of the `rsa` crate. Specify the version you need and include features as necessary.
+# Make sure that the version you use is compatible with the `pem` feature.
+# As of my last training data, the "pem" feature was available in 0.5, but you should check the latest documentation for the correct feature name and compatibility.
+rsa = { version = "0.9.3", features = ["pem"] } 
+
+# Include other dependencies as needed.
+zeroize = "1.6.0"
+tiny-bip39 = "1.0.0"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+qrcode = "0.12.0"
+# Ensure that the version of `rand` you are using is compatible with your other dependencies.
+rand = "0.8.3" # Check if this version is compatible with rsa "0.9.3"
+
+
