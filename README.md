@@ -35,7 +35,7 @@ cargo build
 
 The dependencies for this project are listed as follows:
 
-toml
+```toml
 
 [dependencies]
 rsa = { version = "0.9.3", features = ["pem"] }
@@ -51,6 +51,7 @@ hex = "0.4"
 rand_core = "0.6"
 rand_hc = "0.3"
 chrono = { version = "0.4", features = ["serde"] }
+```
 
 ## Installation
 
