@@ -1,21 +1,21 @@
 [package]
-name = "data-entry-terminal"
+name = "pear-project"
 version = "0.1.0"
 edition = "2021"
 
-[dependencies]
-# Use only one version of the `rsa` crate. Specify the version you need and include features as necessary.
-# Make sure that the version you use is compatible with the `pem` feature.
-# As of my last training data, the "pem" feature was available in 0.5, but you should check the latest documentation for the correct feature name and compatibility.
-rsa = { version = "0.9.3", features = ["pem"] } 
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-# Include other dependencies as needed.
+[dependencies]
+rsa = { version = "0.9.3", features = ["pem"] }
 zeroize = "1.6.0"
 tiny-bip39 = "1.0.0"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 qrcode = "0.12.0"
-# Ensure that the version of `rand` you are using is compatible with your other dependencies.
-rand = "0.8.3" # Check if this version is compatible with rsa "0.9.3"
-
-
+rand = "0.8.3"
+web3 = "0.15"
+tokio = "0.2.25"
+hex = "0.4"
+rand_core = "0.6"
+rand_hc = "0.3"
+chrono = { version = "0.4", features = ["serde"] }
