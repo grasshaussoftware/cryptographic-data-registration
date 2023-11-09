@@ -1,5 +1,8 @@
 # cryptographic-data-registration
-OPEN SOURCE - VERITAS PROJECT MMXXIII - DEUSOPUS - AD HOC - beta
+OPEN SOURCE GPL3.0- "VERITAS PROJECT" MMXXIII by DEUSOPUS - AD HOC - beta
+
+## Whitepaper
+https://drive.google.com/drive/folders/1OIWfF11SJt3TmEB7BoRdOdstNurHJDgx
 
 ## Welcome to Pear🍐
 "think twice"
