@@ -11,6 +11,7 @@ use tokio; // for async runtime
 use rand_core::{ SeedableRng };
 use chrono::{ Utc, DateTime };
 use sha2::{ Sha256, Digest };
+use std::io::{ Write };
 
 // Replace this placeholder with your actual Avalanche node RPC URL and your Infura project ID
 const AVAX_RPC_URL: &str =
@@ -42,27 +43,16 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         let mut maiden = String::new();
         let mut ether = String::new();
         let mut handle = String::new();
-        let mut random_input = String::new();
 
+        // connect metamask to Avalanche-C
+        //let metamask = Metamask::new().await?;
+
+        // Print welcome message
+        
         println!("Welcome to the Avalanche-C Global Identity Registration System.");
-        println!(
-            "Please enter your information below to register your global identity on the Avalanche-C blockchain."
-        );
-        println!(
-            "Your information will be hashed and used to generate a unique public key and seed phrase."
-        );
-        println!(
-            "Your seed phrase will be displayed as a QR code and printed to the thermal printer."
-        );
-        println!(
-            "Your public key will be displayed as a QR code and printed to the thermal printer."
-        );
-        println!("Your private key will be generated and destroyed from memory.");
-        println!("Your private key will not be saved anywhere.");
 
-        println!("Please press Enter to continue...");
-        let mut proceed = String::new();
-        io::stdin().read_line(&mut proceed).expect("Failed to read line");
+        println!("Please enter your information below to register your global identity on the Avalanche-C blockchain.\n");
+
 
         println!("Please enter your name:");
         io::stdin().read_line(&mut name).expect("Failed to read line");
@@ -76,69 +66,70 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         println!("Please enter your handle on X.com:");
         io::stdin().read_line(&mut handle).expect("Failed to read line");
 
-        
-
-        println!("Please enter a random number number from 0-999:");
-        io::stdin().read_line(&mut random_input).expect("Failed to read line");
-
-        let random_number: u64 = random_input.trim().parse().expect("Please type a number!");
-
         // Call to get the current block hash as a seed
         let block_hash_seed = get_current_block_hash().await.expect(
             "Failed to get current block hash"
         );
 
-        // Convert the block hash to a byte array (it's already a byte array if retrieved from the block hash)
-        let block_hash_bytes = block_hash_seed;
-
-        // Convert the random number to a byte array
-        let random_bytes = random_number.to_be_bytes();
-
         // Hash the combined inputs
         let mut hasher = Sha256::new();
-        hasher.update(&block_hash_bytes);
-        hasher.update(&random_bytes);
+        hasher.update(&block_hash_seed);
+
+        hasher.update(&ether.trim().as_bytes());
         let hash_result = hasher.finalize();
         let mut rng_seed = [0u8; 32];
         rng_seed.copy_from_slice(&hash_result.as_slice()[0..32]);
 
-        // Now rng_seed contains the hashed result of both the block hash and the user's random number,
+        // Now rng_seed contains the hashed result of both the block hash and the user's ether address,
         // and can be used as a high-entropy seed for your RNG
         let mut rng = rand_hc::Hc128Rng::from_seed(rng_seed);
+        //drop(rng_seed);
 
         // Generate RSA keys using the seeded RNG
         let bits = 2048;
         let private_key = RsaPrivateKey::new(&mut rng, bits).expect("Failed to generate a key");
         let public_key = RsaPublicKey::from(&private_key);
-
-        // Export public key as PEM
-        let public_key_pem = public_key.to_public_key_pem(LineEnding::LF)?;
-
-        // Generate a new mnemonic
-        let mnemonic = Mnemonic::new(MnemonicType::Words24, Language::English);
-        let phrase = mnemonic.phrase();
+        //drop(rng);
 
         // The private key is dropped and its memory is zeroed at this point
         drop(private_key);
 
+        // Export public key as PEM
+        let public_key_pem = public_key.to_public_key_pem(LineEnding::LF)?;
+        //drop(public_key_pem);
+
+        // Generate a new mnemonic
+        let mnemonic = Mnemonic::new(MnemonicType::Words24, Language::English);
+        let phrase = mnemonic.phrase();
+        //drop(mnemonic);
+
+        // Convert mnemonic phrase to QR code in memory
+        let code = QrCode::new(phrase).unwrap();
+        let image = code.render::<unicode::Dense1x2>().build();
+        
+        // code contains the qr code in memory and is therefore vulnerable to being dumped to disk
+        //drop(code);
+
         // Print the seed phrase, time stamp, and QR code to the thermal printer
         //https://docs.rs/thermal-print/latest/thermal_print/
+
+        // Print the timestamp
+        println!("{}", now);
+        //drop(now);
 
         // Print block hash in hex
         let hex_string = block_hash_seed
             .iter()
             .map(|byte| format!("{:02x}", byte))
             .collect::<String>();
+        //drop(block_hash_seed);
         println!("Block#: {}", hex_string);
+        //drop(hex_string);
+        
         // Print the mnemonic phrase
         println!("Your seed phrase (mnemonic): {}", phrase);
-
-        // Print the timestamp
-        println!("{}", now);
-
-        // Convert mnemonic phrase to QR code and display it
-        let code = QrCode::new(phrase).unwrap();
-        let image = code.render::<unicode::Dense1x2>().build();
+        //drop(phrase);
+        
         println!("Your unique seed phrase QR token: {}", image);
 
         // Wait for 25 seconds before proceeding
@@ -170,17 +161,34 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         let image = code.render::<unicode::Dense1x2>().quiet_zone(false).build();
 
         println!("This is your public key QR token. Please photograph it for your records. It is your proof of your rights.\n{}", image);
+        println!("Registration is now complete.");
+        println!("Your private data was successfully zeroed from memory and was not saved.\n");
 
-        println!("Your private key was successfully destroyed from memory as was not saved.");
+        //println!("Press Enter to register your global identity on the Avalanche-C blockchain...");
+        //let mut proceed = String::new();
+        //io::stdin().read_line(&mut proceed).expect("Failed to read line");
 
-        // Reset for the next person to use it
-        println!("Registration Complete. Thank you and have a nice day.");
+        //mint your public key as an NFT on the Avalanche-C blockchain
 
-        // Prompt to register next user or exit
-        println!("Press Enter to register your global identity on the Avalanche-C blockchain...");
+        //println!("Your public key has been minted as an NFT on the Avalanche-C blockchain.");
+
+                   
+        
+        
+        
+        
+        println!("Press enter to exit...");
+
+
+
         let mut proceed = String::new();
         io::stdin().read_line(&mut proceed).expect("Failed to read line");
 
-        println!("Hello!");
+        // disconnect metamask wallet
+        // drop(metamask);
+
+
+        io::stdout().flush().unwrap(); // Flushes the stdout buffer
+
     }
 }
