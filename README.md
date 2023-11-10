@@ -79,6 +79,10 @@ Follow the interactive prompts to input your data and receive your generated key
 
 Use the app "QR Code Scanner" for mobile to read the QR codes and verify the information embedded in them
 
+## Use Cases
+
+Could be used to prove the legitimacy of a multitude of personal identification such as birth certificates, proof of citizenship, license plates, passports, driver's licenses, car title, etc. the list goes on and on. Basicall any and all noteable documents or data that would otherwise need a witness or notary public.
+
 ## Security
 
 This application uses cryptographic RNG seeded with the current Avalanche C-Chain block hash for RSA key generation and zeroizes memory for sensitive information.
