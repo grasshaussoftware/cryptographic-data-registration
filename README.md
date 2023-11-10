@@ -22,6 +22,7 @@ The Pear Project is a Rust application that facilitates the generation of crypto
 - Converts mnemonic phrases and user data to QR tokens.
 - Ensures sensitive information is not retained by zeroing memory.
 - Prints your private key info to a CSN-A2 thermal printer via embedded_hal.
+- Mints your public key QR code token to an NFT on the Avalanche C-chain for permanency.
 
 ## Requirements
 
