@@ -77,9 +77,11 @@ cargo run
 
 Follow the interactive prompts to input your data and receive your generated keys and QR tokens.
 
+Use the app "QR Code Scanner" for mobile to read the QR codes and verify the information embedded in them
+
 ## Security
 
-This application uses cryptographic RNG seeded with the current Ethereum block hash for RSA key generation and zeroizes memory for sensitive information.
+This application uses cryptographic RNG seeded with the current Avalanche C-Chain block hash for RSA key generation and zeroizes memory for sensitive information.
 ## License
 
 GPL3 License
