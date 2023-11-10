@@ -11,7 +11,6 @@ use tokio; // for async runtime
 use rand_core::{ SeedableRng };
 use chrono::{ Utc, DateTime };
 use sha2::{ Sha256, Digest };
-use std::io::{ Write };
 
 // Replace this placeholder with your actual Avalanche node RPC URL and your Infura project ID
 const AVAX_RPC_URL: &str =
@@ -32,40 +31,100 @@ async fn get_current_block_hash() -> web3::Result<[u8; 32]> {
     Err(web3::Error::Decoder("Failed to get current block hash".into()))
 }
 
+
+
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     loop {
-        //timestamp
+        // clear screen
+        print!("{}[2J", 27 as char);
+
+        // Generate QR code for smart contract address
+        // Print QR code to stdout
+        // println!("Please connect your Metamask wallet to Avalanche-C by scanning this code...\n");
+        
+        // Connect metamask wallet to "pear-project" smart contract on Avalanche C-Chain
+        // via QR code
+        
+        // Success or error
+        //println!("Your Metamask wallet is now connected to Avalanche-C.\n");
+        //println!("Press enter to continue...");
+        //let mut proceed = String::new();
+        //io::stdin().read_line(&mut proceed).expect("Failed to read line");
+
+        // clear screen
+        //print!("{}[2J", 27 as char);
+
+
+        // (disregard references in this demo to photographing your public key and private key. 
+        // the private key info will be printed to the thermal printer and then zeroed from memory.
+        // the public key info will be printed to the thermal printer and then minted as an NFT on the Avalanche-C blockchain.)
+        
+        // Welcome message
+        println!("Welcome to the Avalanche-C Global Identity Registration System.\n");
+        let title = "Avalanche-C Global Identity Registration System";
+
+        // sample block
+        let sample = get_current_block_hash().await.expect(
+            "Failed to get current block hash"
+        );
+
+        // timestamp
         let now: DateTime<Utc> = Utc::now();
 
         // Collect user information
         let mut name = String::new();
+        let mut dob = String::new();
+        let mut gender = String::new();
         let mut maiden = String::new();
-        let mut ether = String::new();
-        let mut handle = String::new();
-
-        // connect metamask to Avalanche-C
-        //let metamask = Metamask::new().await?;
-
-        // Print welcome message
-        
-        println!("Welcome to the Avalanche-C Global Identity Registration System.");
+        let mut home = String::new();
+        let mut ssn = String::new();
+        let mut address = String::new();
+        let mut mail = String::new();
+        let mut phone = String::new();
+        let mut email = String::new();
+        let mut user = String::new();
+        let mut defi = String::new();
 
         println!("Please enter your information below to register your global identity on the Avalanche-C blockchain.\n");
-
 
         println!("Please enter your name:");
         io::stdin().read_line(&mut name).expect("Failed to read line");
 
+        println!("Please enter your date of birth:");
+        io::stdin().read_line(&mut dob).expect("Failed to read line");
+
+        println!("What is your gender?(at birth)");
+        io::stdin().read_line(&mut gender).expect("Failed to read line");
+
         println!("Please enter your mother's maiden name:");
-        io::stdin().read_line(&mut maiden).expect("Failed to read line");
+        io::stdin().read_line(&mut maiden).expect("Failed to read line");        
 
-        println!("Please enter your Ethereum public key:");
-        io::stdin().read_line(&mut ether).expect("Failed to read line");
+        println!("Please enter your citizenship:");
+        io::stdin().read_line(&mut home).expect("Failed to read line");
 
-        println!("Please enter your handle on X.com:");
-        io::stdin().read_line(&mut handle).expect("Failed to read line");
+        println!("Please enter your social security number:");
+        io::stdin().read_line(&mut ssn).expect("Failed to read line");
 
+        println!("Please enter your address:");
+        io::stdin().read_line(&mut address).expect("Failed to read line");
+
+        println!("Please enter your mailing address:");
+        io::stdin().read_line(&mut mail).expect("Failed to read line");
+
+        println!("Please enter your phone number:");
+        io::stdin().read_line(&mut phone).expect("Failed to read line");
+
+        println!("Please enter your email address:");
+        io::stdin().read_line(&mut email).expect("Failed to read line");
+
+        println!("Please enter your username on x.com:");
+        io::stdin().read_line(&mut user).expect("Failed to read line");
+
+        println!("Please enter your x0 public key address:");
+        io::stdin().read_line(&mut defi).expect("Failed to read line");
+
+        
         // Call to get the current block hash as a seed
         let block_hash_seed = get_current_block_hash().await.expect(
             "Failed to get current block hash"
@@ -75,7 +134,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         let mut hasher = Sha256::new();
         hasher.update(&block_hash_seed);
 
-        hasher.update(&ether.trim().as_bytes());
+        hasher.update(&defi.trim().as_bytes());
         let hash_result = hasher.finalize();
         let mut rng_seed = [0u8; 32];
         rng_seed.copy_from_slice(&hash_result.as_slice()[0..32]);
@@ -132,27 +191,38 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         
         println!("Your unique seed phrase QR token: {}", image);
 
-        // Wait for 25 seconds before proceeding
-        println!("Please take a photo of your seed phrase QR token, but do not share it.");
-        thread::sleep(Duration::from_secs(25));
+        // Print the private key receipt to thermal printer
+        //https://docs.rs/thermal-print/latest/thermal_print/
 
+        
         // Create a URL for the user's X.com profile
-        let url = format!("https://x.com/{}", handle.trim());
+        let user = format!("https://x.com/{}", user.trim());
 
         // Prepare JSON data
-        let id_data =
+        let pear_card =
             json!({
+            "title": title,    
+            "sample_block": sample,    
+            "now": now,
             "name": name.trim(),
+            "dob": dob.trim(),
+            "gender": gender.trim(),
             "maiden": maiden.trim(),
-            "ether": ether.trim(),
-            "x.com": url,
+            "home": home.trim(),
+            "ssn": ssn.trim(),
+            "address": address.trim(),
+            "mail": mail.trim(),
+            "phone": phone.trim(),
+            "email": email.trim(),
+            "defi": defi.trim(),
+            "user": user,
             "timestamp": now,
             "block": hex_string,
             "public_key": public_key_pem
         });
 
-        // Convert id_data to a string
-        let id_data_string = serde_json::to_string(&id_data).expect("Unable to serialize id data");
+        // Convert pear_card to a string
+        let id_data_string = serde_json::to_string(&pear_card).expect("Unable to serialize id data");
 
         // Generate a QR code for the id_data string
         let code = QrCode::new(&id_data_string).expect("Unable to create QR code");
@@ -160,35 +230,28 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         // Render the QR code as a string
         let image = code.render::<unicode::Dense1x2>().quiet_zone(false).build();
 
-        println!("This is your public key QR token. Please photograph it for your records. It is your proof of your rights.\n{}", image);
-        println!("Registration is now complete.");
+        println!("This is your public key QR token. It contains the information you entered. It is your proof of your rights.\n{}", image);
+
+        // 5 second timer
+        thread::sleep(Duration::from_secs(5));
+        
+        // NFT creation scenario
+        // mint your public key as an NFT on the Avalanche-C blockchain
+        
+        // Success
+        println!("Your public key has been minted as an NFT on the Avalanche-C blockchain and is available in your Metamask wallet.\n");
+        println!("Registration is now complete.\n");
         println!("Your private data was successfully zeroed from memory and was not saved.\n");
-
-        //println!("Press Enter to register your global identity on the Avalanche-C blockchain...");
-        //let mut proceed = String::new();
-        //io::stdin().read_line(&mut proceed).expect("Failed to read line");
-
-        //mint your public key as an NFT on the Avalanche-C blockchain
-
-        //println!("Your public key has been minted as an NFT on the Avalanche-C blockchain.");
-
-                   
         
         
         
         
-        println!("Press enter to exit...");
-
-
-
+        println!("Press enter to end...");
         let mut proceed = String::new();
         io::stdin().read_line(&mut proceed).expect("Failed to read line");
 
-        // disconnect metamask wallet
-        // drop(metamask);
-
-
-        io::stdout().flush().unwrap(); // Flushes the stdout buffer
-
+        // disconnect metamask wallet from "pear-project" smart contract on Avalanche C-Chain
+        
+        
     }
 }
