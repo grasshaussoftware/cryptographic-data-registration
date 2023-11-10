@@ -12,9 +12,19 @@ use rand_core::{ SeedableRng };
 use chrono::{ Utc, DateTime };
 use sha2::{ Sha256, Digest };
 
-// Replace this placeholder with your actual Avalanche node RPC URL and your Infura project ID
+
+async fn chronos {
+    let chronos:
+    DateTime<Utc> = Utc::now().await;
+    return Ok(chronos);
+}
+
+// Avalanche C-Chain RPC URL
+
 const AVAX_RPC_URL: &str =
     "https://avalanche-mainnet.infura.io/v3/f4824ede0b484d33a19f0d01c32c9de1";
+
+
 
 async fn get_current_block_hash() -> web3::Result<[u8; 32]> {
     let http = Http::new(AVAX_RPC_URL)?;
@@ -29,48 +39,54 @@ async fn get_current_block_hash() -> web3::Result<[u8; 32]> {
     }
 
     Err(web3::Error::Decoder("Failed to get current block hash".into()))
+
+    hash_to_hex(hash: [u8; 32]) -> web3::Result<String> {
+        let mut hex_string = String::new();
+        for byte in hash.iter() {
+            hex_string.push_str(&format!("{:02x}", byte));
+        return Ok(hex_string)
+        }
+    }
 }
 
+async fn 
 
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     loop {
+
         // clear screen
         print!("{}[2J", 27 as char);
 
-        // Generate QR code for smart contract address
-        // Print QR code to stdout
-        // println!("Please connect your Metamask wallet to Avalanche-C by scanning this code...\n");
-        
-        // Connect metamask wallet to "pear-project" smart contract on Avalanche C-Chain
-        // via QR code
-        
-        // Success or error
-        //println!("Your Metamask wallet is now connected to Avalanche-C.\n");
-        //println!("Press enter to continue...");
-        //let mut proceed = String::new();
-        //io::stdin().read_line(&mut proceed).expect("Failed to read line");
-
-        // clear screen
-        //print!("{}[2J", 27 as char);
+        print!("seed: {}", seed);
+        print!("hex_string: {}", hex_string);
 
 
-        // (disregard references in this demo to photographing your public key and private key. 
-        // the private key info will be printed to the thermal printer and then zeroed from memory.
-        // the public key info will be printed to the thermal printer and then minted as an NFT on the Avalanche-C blockchain.)
+
+
+        let connect = println!("Connect your Metamask wallet, {}", connect_code);
+        // Print smart contract QR code to stdout for Metamask wallet connection
+        //https://docs.rs/qrcode/0.13.0/qrcode/
+        //https://docs.rs/qrcode/0.13.0/qrcode/render/unicode/index.html
         
         // Welcome message
         println!("Welcome to the Avalanche-C Global Identity Registration System.\n");
+        println!("This system will generate a unique public key for you and mint it as an NFT on the Avalanche-C blockchain.\n");
+        let alpha_chronos = chronos().await.expect("Failed to get current timestamp");
+        let alpha_block = get_current_block_hash(hex_string).await.expect("Failed to get current block hash");
+        println!("Timestamp: {}", alpha_chronos);
+        println!("Please press enter to continue...");
+        let mut proceed = String::new();
+        io::stdin().read_line(&mut proceed).expect("Failed to read line");
+
+        // Generate QR code for smart contract address
+        
+        // Print QR code to stdout
+      
+        //
+        
         let title = "Avalanche-C Global Identity Registration System";
-
-        // sample block
-        let sample = get_current_block_hash().await.expect(
-            "Failed to get current block hash"
-        );
-
-        // timestamp
-        let now: DateTime<Utc> = Utc::now();
 
         // Collect user information
         let mut name = String::new();
@@ -121,12 +137,13 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         println!("Please enter your username on x.com:");
         io::stdin().read_line(&mut user).expect("Failed to read line");
 
-        println!("Please enter your x0 public key address:");
+        println!("Please enter your '0x' public key address:");
         io::stdin().read_line(&mut defi).expect("Failed to read line");
 
-        
+        println!("One moment while we generate your public key and private key...\n");
+                
         // Call to get the current block hash as a seed
-        let block_hash_seed = get_current_block_hash().await.expect(
+        let block_hash_seed = get_current_block_hash(seed).await.expect(
             "Failed to get current block hash"
         );
 
@@ -134,75 +151,78 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         let mut hasher = Sha256::new();
         hasher.update(&block_hash_seed);
 
+        drop(block_hash_seed);
+
         hasher.update(&defi.trim().as_bytes());
         let hash_result = hasher.finalize();
         let mut rng_seed = [0u8; 32];
         rng_seed.copy_from_slice(&hash_result.as_slice()[0..32]);
 
+        drop(hash_result);
+
         // Now rng_seed contains the hashed result of both the block hash and the user's ether address,
         // and can be used as a high-entropy seed for your RNG
         let mut rng = rand_hc::Hc128Rng::from_seed(rng_seed);
-        //drop(rng_seed);
-
+        
+        drop(rng_seed);
+        
         // Generate RSA keys using the seeded RNG
         let bits = 2048;
         let private_key = RsaPrivateKey::new(&mut rng, bits).expect("Failed to generate a key");
         let public_key = RsaPublicKey::from(&private_key);
-        //drop(rng);
 
-        // The private key is dropped and its memory is zeroed at this point
         drop(private_key);
-
-        // Export public key as PEM
-        let public_key_pem = public_key.to_public_key_pem(LineEnding::LF)?;
-        //drop(public_key_pem);
 
         // Generate a new mnemonic
         let mnemonic = Mnemonic::new(MnemonicType::Words24, Language::English);
         let phrase = mnemonic.phrase();
-        //drop(mnemonic);
 
         // Convert mnemonic phrase to QR code in memory
         let code = QrCode::new(phrase).unwrap();
         let image = code.render::<unicode::Dense1x2>().build();
-        
-        // code contains the qr code in memory and is therefore vulnerable to being dumped to disk
-        //drop(code);
-
-        // Print the seed phrase, time stamp, and QR code to the thermal printer
-        //https://docs.rs/thermal-print/latest/thermal_print/
-
-        // Print the timestamp
-        println!("{}", now);
-        //drop(now);
-
-        // Print block hash in hex
-        let hex_string = block_hash_seed
-            .iter()
-            .map(|byte| format!("{:02x}", byte))
-            .collect::<String>();
-        //drop(block_hash_seed);
-        println!("Block#: {}", hex_string);
-        //drop(hex_string);
+   
+        println!("Alpha block#: {}", alpha_block);
         
         // Print the mnemonic phrase
         println!("Your seed phrase (mnemonic): {}", phrase);
-        //drop(phrase);
         
         println!("Your unique seed phrase QR token: {}", image);
+
+        // Print the timestamp
+        let zulu = chronos().await.expect("Failed to get current timestamp");
+        println!("Timestamp: {}", zulu);
+
+        println!("This is your private key QR token. It contains your identifying data. It is your proof of your identity.\n");
+        println!("DO NOT photograph it or show it to anyone. It is your private key.\n");
+
+        println!("Private key is printing to thermal printer...\n");
+        // Print the "private key" information receipt to thermal printer
+        // Print zulu, phrase, and image to thermal printer
+        //https://docs.rs/thermal-print/latest/thermal_print/
+
+        // The private key is dropped and its memory is zeroed at this point
+        drop(phrase)
+        drop(image)
+
+        // Export public key as PEM
+        let public_key_pem = public_key.to_public_key_pem(LineEnding::LF)?;
+        //drop(public_key_pem);        
+        
+        // Print the seed phrase, time stamp, and QR code to the thermal printer
+        //https://docs.rs/thermal-print/latest/thermal_print/
 
         // Print the private key receipt to thermal printer
         //https://docs.rs/thermal-print/latest/thermal_print/
 
-        
-        // Create a URL for the user's X.com profile
+        // Create a URL from the user's x.com username
         let user = format!("https://x.com/{}", user.trim());
 
         // Prepare JSON data
-        let pear_card =
+        let public_key =
             json!({
-            "title": title,    
-            "sample_block": sample,    
+            "title": title,
+            "alpha_chronos": alpha_chronos,    
+            "alpha_block": alpha_block,    
             "now": now,
             "name": name.trim(),
             "dob": dob.trim(),
@@ -216,13 +236,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             "email": email.trim(),
             "defi": defi.trim(),
             "user": user,
-            "timestamp": now,
-            "block": hex_string,
+            "zulu": zulu,
             "public_key": public_key_pem
         });
 
-        // Convert pear_card to a string
-        let id_data_string = serde_json::to_string(&pear_card).expect("Unable to serialize id data");
+        // Convert public_key to a string
+        let id_data_string = serde_json::to_string(&public_key).expect("Unable to serialize id data");
 
         // Generate a QR code for the id_data string
         let code = QrCode::new(&id_data_string).expect("Unable to create QR code");
@@ -230,10 +249,29 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         // Render the QR code as a string
         let image = code.render::<unicode::Dense1x2>().quiet_zone(false).build();
 
+        // Print the QR code to stdout
+        // println!("Please photograph this QR code with your phone to save your public key and private key.\n");
+        // println!("Your public key is your proof of your rights.\n");
+        // println!("Your private key is your proof of your identity.\n");
+
         println!("This is your public key QR token. It contains the information you entered. It is your proof of your rights.\n{}", image);
+        println!("Please photograph it and save it to your phone.\n");
+        
+
+
+        // Print the QR code to the thermal printer
+        //https://docs.rs/thermal-print/latest/thermal_print/
+
+        // Print the public key receipt to thermal printer
+        //https://docs.rs/thermal-print/latest/thermal_print/
+
+        // Print QR code to stdout
+        //println!("Please photograph this QR code with your phone to save your public key and private key.\n");
+        //println!("Your public key is your proof of your rights.\n");
+        //println!("Your private key is your proof of your identity.\n");
 
         // 5 second timer
-        thread::sleep(Duration::from_secs(5));
+        thread::sleep(Duration::from_secs(10));
         
         // NFT creation scenario
         // mint your public key as an NFT on the Avalanche-C blockchain
@@ -249,9 +287,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         println!("Press enter to end...");
         let mut proceed = String::new();
         io::stdin().read_line(&mut proceed).expect("Failed to read line");
-
-        // disconnect metamask wallet from "pear-project" smart contract on Avalanche C-Chain
-        
+        break;        
         
     }
 }
