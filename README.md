@@ -4,7 +4,7 @@ OPEN SOURCE GPL3.0- "VERITAS PROJECT" MMXXIII by DEUSOPUS - AD HOC - beta
 ## Whitepaper
 https://drive.google.com/drive/folders/1OIWfF11SJt3TmEB7BoRdOdstNurHJDgx
 
-## Welcome to Pear🍐
+## Welcome to Pear🍐 (key pairs, get it?)
 "think twice"
 "got your pear?"
 
@@ -17,7 +17,7 @@ The Pear Project is a Rust application that facilitates the generation of crypto
 
 ## Features
 
-- Generates RSA public/private key pairs based on the current Ethereum block hash as a seed.
+- Generates RSA public/private key pairs based on the current Avalanche-C chain block hash as a seed.
 - Creates mnemonic phrases for user seed generation.
 - Converts mnemonic phrases and user data to QR tokens.
 - Ensures sensitive information is not retained by zeroing memory.
@@ -76,9 +76,10 @@ cargo run
 ```
 
 Follow the interactive prompts to input your data and receive your generated keys and QR tokens.
-Security
+
+## Security
 
 This application uses cryptographic RNG seeded with the current Ethereum block hash for RSA key generation and zeroizes memory for sensitive information.
-License
+## License
 
 GPL3 License
