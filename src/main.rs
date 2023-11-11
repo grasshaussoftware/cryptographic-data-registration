@@ -33,11 +33,12 @@ async fn get_current_block_hash() -> web3::Result<[u8; 32]> {
     }
 }
 
-fn hash_to_hex(hash: [u8; 32]) -> String {
+fn hash_to_hex(hash: [u8; 32]) -> std::string::String {
     let mut hex_string = String::new();
     for byte in hash.iter() {
         hex_string.push_str(&format!("{:02x}", byte));
     }
+    hex_string // Return the hexadecimal string
 }
 
 #[tokio::main]
@@ -54,9 +55,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             "Failed to get current block hash"
         );
         let alpha_block = hash_to_hex(alpha_block_hash);
-
-        // Assuming alpha_block is meant to be the current block hash in hex format
-        let alpha_block = hex_string.clone(); // Use hex_string or another appropriate value
 
         // Generate a QR code for the smart contract address
         //https://docs.rs/qrcode/0.13.0/qrcode/
@@ -201,15 +199,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         // Print the mnemonic phrase
         println!("Your seed phrase (mnemonic) is: {}", phrase);
         // Print the mnemonic phrase QR code to stdout
-        println!("Your unique seed phrase QR token: {}", image);
+        println!("{}",image);
 
         // Print the timestamp
 
         println!(
-            "This is your private key QR token. It contains your identifying data. It is your proof of your identity.\n"
+            "This is your private key QR token. It is your proof of your identity.\n"
         );
         println!(
-            "DO NOT photograph it or show it to anyone. It is your private key. Please scan it with a QR code scanner to verify that it is correctly displaying your seed phrase.\n"
+            "DO NOT photograph it or show it to anyone. It is your private key. Please scan it with a trusted QR code scanner to verify that it is correctly displaying your seed phrase.\n"
         );
         println!("Please press enter to continue...");
         let mut proceed = String::new();
@@ -290,8 +288,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         // println!("Your public key is your proof of your rights.\n");
         // println!("Your private key is your proof of your identity.\n");
 
-        println!("{}\nThis is your public key QR token. It contains your identification information you entered. It is your proof of your rights.", image);
-        println!("Please photograph it and save it to your phone.");
+        println!("{}\nThis is your public key QR token. It contains the identifying information you entered. It is your proof of your rights. You may show it to anyone.", image);
+        println!("Please photograph it and save it to your phone and your cloud.");
 
         // Print the QR code to the thermal printer
         //https://docs.rs/thermal-print/latest/thermal_print/
@@ -330,4 +328,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     Ok(())
 }
-// by deusopus 2023 all rights reserved
+
+// by grasshaussoftware c2023. all rights reserved.
+// https://github.com/grasshaussoftware/cryptographic-data-registration
+// contact: deusopus@duck.com
