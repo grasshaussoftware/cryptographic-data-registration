@@ -11,7 +11,7 @@ use tokio; // for async runtime
 use rand_core::{ SeedableRng };
 use chrono::{ Utc, DateTime };
 use sha2::{ Sha256, Digest };
-use rand::{Rng, rngs::StdRng};
+use rand::{ Rng, rngs::StdRng };
 
 // Avalanche C-Chain RPC URL
 
@@ -24,13 +24,13 @@ async fn get_current_block_hash() -> web3::Result<[u8; 32]> {
 
     if let Some(block) = web3.eth().block(BlockId::Number(BlockNumber::Latest)).await? {
         if let Some(hash) = block.hash {
-            let mut seed = [0u8; 32];
-            seed.copy_from_slice(&hash.0);
-            return Ok(seed);
+            Ok(hash.0)
+        } else {
+            Err(web3::Error::Decoder("No hash found for the latest block".into()))
         }
+    } else {
+        Err(web3::Error::Decoder("Failed to fetch the latest block".into()))
     }
-
-    Err(web3::Error::Decoder("Failed to get current block hash".into()))
 }
 
 fn hash_to_hex(hash: [u8; 32]) -> String {
@@ -38,7 +38,6 @@ fn hash_to_hex(hash: [u8; 32]) -> String {
     for byte in hash.iter() {
         hex_string.push_str(&format!("{:02x}", byte));
     }
-    hex_string
 }
 
 #[tokio::main]
@@ -51,8 +50,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             Utc::now()
         }
 
-        let seed = get_current_block_hash().await.expect("Failed to get current block hash");
-        let hex_string = hash_to_hex(seed);
+        let alpha_block_hash = get_current_block_hash().await.expect(
+            "Failed to get current block hash"
+        );
+        let alpha_block = hash_to_hex(alpha_block_hash);
 
         // Assuming alpha_block is meant to be the current block hash in hex format
         let alpha_block = hex_string.clone(); // Use hex_string or another appropriate value
@@ -204,8 +205,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         // Print the timestamp
 
-        
-
         println!(
             "This is your private key QR token. It contains your identifying data. It is your proof of your identity.\n"
         );
@@ -243,7 +242,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         let zulu = get_chronos().await;
 
         // Get the current block hash
-        let zulu_block = get_current_block_hash().await.expect("Failed to get current block hash");
+        let zulu_block_hash = get_current_block_hash().await.expect(
+            "Failed to get current block hash"
+        );
+        let zulu_block = hash_to_hex(zulu_block_hash);
 
         // Export public key as PEM
         let public_key_pem = public_key.to_public_key_pem(LineEnding::LF)?;
@@ -304,7 +306,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         println!("Please press enter to continue...");
         let mut proceed = String::new();
         io::stdin().read_line(&mut proceed).expect("Failed to read line");
-        
+
         // NFT creation scenario
         // mint your public key as an NFT on the Avalanche-C blockchain
         println!(
@@ -328,3 +330,4 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     Ok(())
 }
+// by deusopus 2023 all rights reserved
