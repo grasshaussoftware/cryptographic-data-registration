@@ -8,8 +8,9 @@ https://drive.google.com/drive/folders/1OIWfF11SJt3TmEB7BoRdOdstNurHJDgx
 "think twice"
 "got your pear?"
 
-## Watch it in action on X.com
-https://x.com/deusopus/status/1723569897542922407?s=20
+## Explainer Video
+Check out the [explainer video](media/overview.mp4) for a quick overview of the project.
+
 
 # Pear Project
 
