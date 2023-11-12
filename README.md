@@ -1,5 +1,5 @@
 # cryptographic-data-registration
-OPEN SOURCE GPL3.0- "VERITAS PROJECT" MMXXIII by DEUSOPUS - AD HOC - beta
+OPEN SOURCE - MPL2.0 & GPL3.0 - "VERITAS PROJECT" MMXXIII by DEUSOPUS - AD HOC - BETA
 
 ## Whitepaper
 https://drive.google.com/drive/folders/1OIWfF11SJt3TmEB7BoRdOdstNurHJDgx
@@ -90,4 +90,4 @@ Could be used to prove the legitimacy of a multitude of personal identification 
 This application uses cryptographic RNG seeded with the current Avalanche C-Chain block hash for RSA key generation and zeroizes memory for sensitive information.
 ## License
 
-GPL3 License
+MPL2.0 & GPL3 License
