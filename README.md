@@ -12,9 +12,9 @@ https://drive.google.com/drive/folders/1OIWfF11SJt3TmEB7BoRdOdstNurHJDgx
 Check out the [explainer video](media/overview.mp4) for a quick overview of the project.
 
 
-# Pear Project
+# Pear 1.0
 
-The Pear Project is a Rust application that facilitates the generation of cryptographic keys and QR tokens for users registering their global identity on the Avalanche-C blockchain.
+The Pear project is a Rust application that facilitates the generation of cryptographic keys and QR tokens for users registering their global identity on the Avalanche-C blockchain.
 
 ## Features
 
