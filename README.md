@@ -9,7 +9,7 @@ https://drive.google.com/drive/folders/1OIWfF11SJt3TmEB7BoRdOdstNurHJDgx
 "got your pear?"
 
 ## Explainer Video
-Check out the [explainer video](media/overview.mp4) for a quick overview of the project.
+Check out the [explainer video](https://www.youtube.com/watch?v=M51dwN7r5Ao) for a quick overview of the project.
 
 
 # Pear 0.1.0
