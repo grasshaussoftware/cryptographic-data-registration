@@ -1,3 +1,5 @@
+#REQUIRES INFURA API
+
 # cryptographic-data-registration
 OPEN SOURCE - MPL2.0 & GPL3.0 - "VERITAS PROJECT" MMXXIII by DEUSOPUS - AD HOC - BETA
 
