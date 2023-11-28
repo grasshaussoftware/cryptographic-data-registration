@@ -1,5 +1,5 @@
 # cryptographic-data-registration
-OPEN SOURCE - MPL2.0 & GPL3.0 - "VERITAS PROJECT" MMXXIII by DEUSOPUS - AD HOC - BETA
+Pear Project - OPEN SOURCE - MPL2.0 & GPL3.0 - VERITAS MMXXIII DEUSOPUS
 
 ## Whitepaper
 https://drive.google.com/drive/folders/1OIWfF11SJt3TmEB7BoRdOdstNurHJDgx
