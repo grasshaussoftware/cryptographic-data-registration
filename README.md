@@ -1,16 +1,12 @@
-REQUIRES INFURA API
-
-Private Electronic Access Register
-
 # cryptographic-data-registration
 OPEN SOURCE - MPL2.0 & GPL3.0 - "VERITAS PROJECT" MMXXIII by DEUSOPUS - AD HOC - BETA
 
 ## Whitepaper
 https://drive.google.com/drive/folders/1OIWfF11SJt3TmEB7BoRdOdstNurHJDgx
 
-## Welcome to Pear🍐 (key pairs, get it?)
-"think twice"
-"got your pear?"
+## Welcome to Pear🍐
+Private Electronic Access Register
+Requires Infura API
 
 ## Explainer Video
 Check out the [explainer video](https://www.youtube.com/watch?v=M51dwN7r5Ao) for a quick overview of the project.
