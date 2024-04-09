@@ -2,7 +2,7 @@
 Pear Project - OPEN SOURCE - MPL2.0 & GPL3.0 - VERITAS MMXXIII DEUSOPUS
 
 ## Whitepaper
-https://drive.google.com/drive/folders/1OIWfF11SJt3TmEB7BoRdOdstNurHJDgx
+[link](https://github.com/grasshaussoftware/crypto-id-whitepaper)
 
 ## Welcome to Pear🍐
 Private Electronic Access Register
