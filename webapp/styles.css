@@ -1,0 +1,68 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+    background-color: #f4f4f4;
+}
+h2 {
+    text-align: center;
+}
+.form-container {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+input, button {
+    display: block;
+    width: 100%; /* Makes input fields take the full container width */
+    margin-top: 10px;
+    padding: 10px;
+    box-sizing: border-box; /* Includes padding in the width */
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+#infoPreview {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #e3f2fd;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #333;
+    text-align: left;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+#qrCode {
+    margin-top: 20px;
+    padding: 15px;
+    background: white; /* Keep the default background white for the QR code */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 281px; /* Container size remains set to frame the QR code */
+    height: 281px;
+    visibility: hidden; /* Initially hidden until QR code is generated */
+}
+
+

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PearID Preparation Form</title>
+<link rel="stylesheet" href="styles.css">
+<script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Be Trusted Anywhere</h1>
+        <h2>ID Card Information</h2>
+        <label for="name">Full Name:</label>
+        <input type="text" id="name" placeholder="Full name" required>
+        <label for="dob">Date of Birth:</label>
+        <input type="date" id="dob" required>
+        <label for="home">Citizenship:</label>
+        <input type="text" id="pob" placeholder="Home country" required>
+        <label for="phone">Phone:</label>
+        <input type="tel" id="phone" placeholder="Phone">
+        <label for="email">Email:</label>
+        <input type="email" id="email" placeholder="Email">
+
+        <button onclick="generateQRCode()">Generate QR Code</button>
+    </div>
+    
+    <div id="qrCode"></div>
+    <div id="infoPreview"></div>
+    
+    
+
+    <script src="script.js"></script>
+</body>
+</html>
+
