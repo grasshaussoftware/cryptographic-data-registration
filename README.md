@@ -92,3 +92,5 @@ This application uses cryptographic RNG seeded with the current Avalanche C-Chai
 ## License
 
 MPL2.0 & GPL3 License
+
+original inspiration from this video https://www.youtube.com/live/1iAg6BITPdc?si=OOBjhYKNFocCdEoi
